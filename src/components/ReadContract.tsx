@@ -2,9 +2,9 @@
 
 import { useState } from 'react'
 import { BaseError } from 'viem'
-import { type Address, useContractRead } from 'wagmi'
-
+import { type Address, useContractRead, useWalletClient } from 'wagmi'
 import { wagmiContractConfig } from './contracts'
+import contracts from './constants'
 
 export function ReadContract() {
   return (
@@ -19,23 +19,27 @@ export function ReadContract() {
 }
 
 function TotalSupply() {
+  const { data: walletClient, isError, isLoading } = useWalletClient()
+
   const { data, isRefetching, refetch } = useContractRead({
-    ...wagmiContractConfig,
-    functionName: 'totalSupply',
+    address: contracts[31337][0].contracts.Upala.address,
+    abi: contracts[31337][0].contracts.Upala.abi,
+    functionName: 'myId',
+    account: walletClient?.account
   })
 
   return (
     <div>
       Total Supply: {data?.toString()}
       <button
-        disabled={isRefetching}
-        onClick={() => refetch()}
-        style={{ marginLeft: 4 }}
-      >
-        {isRefetching ? 'loading...' : 'refetch'}
-      </button>
-    </div>
-  )
+          disabled={isRefetching}
+          onClick={() => refetch()}
+          style={{ marginLeft: 4 }}
+        >
+          {isRefetching ? 'loading...' : 'refetch'}
+        </button>
+      </div>
+    )
 }
 
 function BalanceOf() {
