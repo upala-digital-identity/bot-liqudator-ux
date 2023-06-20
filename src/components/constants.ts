@@ -1,3 +1,5 @@
+import { erc20ABI } from "wagmi";
+
 const contracts = {
     31337: [
       {
@@ -1279,6 +1281,10 @@ const contracts = {
               }
             ],
           },
+          DAI: {
+            address: "0x9fE46736679d2D9a65F0992F2272dE9f3c7fa6e0",
+            abi: erc20ABI,
+          }
         },
       },
     ],

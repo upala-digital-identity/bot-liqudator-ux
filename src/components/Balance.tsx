@@ -2,7 +2,8 @@
 
 import { useState } from 'react'
 import type { Address } from 'wagmi'
-import { useAccount, useBalance } from 'wagmi'
+import { useAccount, useBalance, erc20ABI, useContractRead } from 'wagmi'
+import contracts from './constants'
 
 export function Balance() {
   return (
@@ -11,9 +12,6 @@ export function Balance() {
         <AccountBalance />
       </div>
       <br />
-      <div>
-        <FindBalance />
-      </div>
     </>
   )
 }
@@ -25,36 +23,20 @@ export function AccountBalance() {
     watch: true,
   })
 
+  // TODO do dai balalance
+  const { data: daiBalance, error, isLoading, isSuccess } = useContractRead({
+    address: contracts[31337][0].contracts.DAI.address,
+    abi: contracts[31337][0].contracts.DAI.abi,
+    functionName: 'balanceOf',
+    args: [address as Address],
+    enabled: Boolean(address),
+  })
+
   return (
     <div>
       {data?.formatted}
+      {daiBalance?.toString()}
       <button onClick={() => refetch()}>refetch</button>
-    </div>
-  )
-}
-
-export function FindBalance() {
-  const [address, setAddress] = useState('')
-  const { data, isLoading, refetch } = useBalance({
-    address: address as Address,
-  })
-
-  const [value, setValue] = useState('')
-
-  return (
-    <div>
-      Find balance:{' '}
-      <input
-        onChange={(e) => setValue(e.target.value)}
-        placeholder="wallet address"
-        value={value}
-      />
-      <button
-        onClick={() => (value === address ? refetch() : setAddress(value))}
-      >
-        {isLoading ? 'fetching...' : 'fetch'}
-      </button>
-      <div>{data?.formatted}</div>
     </div>
   )
 }
