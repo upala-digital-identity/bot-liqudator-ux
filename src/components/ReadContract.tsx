@@ -114,7 +114,7 @@ function TotalSupply() {
     // enabled: !gotUpalaID,  // no Upala ID TODO 
   })
   console.log(liquidateConfig)
-  const { write: liquidate, data: liquidationData, error: liquidationError, isLoading: isLiqLoading, isError: isLiqError } = useContractWrite(newIdentityConfig)
+  const { write: liquidate, data: liquidationData, error: liquidationError, isLoading: isLiqLoading, isError: isLiqError } = useContractWrite(liquidateConfig)
   const {
     data: liqReceipt,
     isLoading: isLiqPending,
