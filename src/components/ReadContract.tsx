@@ -99,7 +99,6 @@ function TotalSupply() {
 
 
   // liqudate
-
   const { config: liquidateConfig } = usePrepareContractWrite({
     address: contracts[31337][0].contracts.SignedScoresPool.address,
     abi: contracts[31337][0].contracts.SignedScoresPool.abi,

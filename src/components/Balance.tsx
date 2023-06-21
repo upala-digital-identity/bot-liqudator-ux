@@ -1,8 +1,6 @@
 'use client'
 
-import { useState } from 'react'
-import type { Address } from 'wagmi'
-import { useAccount, useBalance, erc20ABI, useContractRead } from 'wagmi'
+import { useAccount, useBalance } from 'wagmi'
 import contracts from './constants'
 
 export function Balance() {
@@ -11,7 +9,6 @@ export function Balance() {
       <div>
         <AccountBalance />
       </div>
-      <br />
     </>
   )
 }

@@ -20,27 +20,17 @@ import { WriteContractPrepared } from '../components/WriteContractPrepared'
 export function Page() {
   return (
     <>
-      <h1>wagmi + RainbowKit + Next.js</h1>
+      <h1>Bot liquidator</h1>
 
       <ConnectButton />
 
       <Connected>
         <hr />
-        <h2>Network</h2>
-        <NetworkSwitcher />
-        <br />
-        <hr />
         <h2>Balances</h2>
         <Balance />
-        <br />
         <hr />
         <h2>Read Contract</h2>
         <ReadContract />
-        <br />
-        <hr />
-        <h2>Read Contracts</h2>
-        <ReadContracts />
-        <br />
         <br />
       </Connected>
     </>
