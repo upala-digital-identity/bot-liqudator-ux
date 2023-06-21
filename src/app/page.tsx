@@ -30,7 +30,7 @@ export function Page() {
         <NetworkSwitcher />
         <br />
         <hr />
-        <h2>Balance</h2>
+        <h2>Balances</h2>
         <Balance />
         <br />
         <hr />

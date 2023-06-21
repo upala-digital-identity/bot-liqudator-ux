@@ -18,25 +18,20 @@ export function Balance() {
 
 export function AccountBalance() {
   const { address } = useAccount()
-  const { data, refetch } = useBalance({
+  const { data } = useBalance({
     address,
     watch: true,
   })
 
-  // TODO do dai balalance
-  const { data: daiBalance, error, isLoading, isSuccess } = useContractRead({
-    address: contracts[31337][0].contracts.DAI.address,
-    abi: contracts[31337][0].contracts.DAI.abi,
-    functionName: 'balanceOf',
-    args: [address as Address],
-    enabled: Boolean(address),
+  const { data: daiBalance } = useBalance({
+    address,
+    token: contracts[31337][0].contracts.DAI.address,
   })
 
   return (
     <div>
-      {data?.formatted}
-      {daiBalance?.toString()}
-      <button onClick={() => refetch()}>refetch</button>
+      <p>ETH: {data?.formatted}</p>
+      <p>DAI: {daiBalance?.formatted}</p>
     </div>
   )
 }
