@@ -27,7 +27,7 @@ export function AccountBalance() {
 
   return (
     <div>
-      <p>ETH: {data?.formatted}</p>
+      <p>ETH (xDAI): {data?.formatted}</p>
       <p>DAI: {daiBalance?.formatted}</p>
     </div>
   )

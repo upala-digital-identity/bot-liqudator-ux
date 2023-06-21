@@ -32,6 +32,7 @@ function TotalSupply() {
   const [liquidationCheque, setData] = useState(defaultLiquidationCheque);
   const [isLoadingCheque, setLoading] = useState(true);
 
+  // check if address got a liquidation cheque
   useEffect(() => {
     const fetchData = async () => {
       setLoading(true);
@@ -122,17 +123,19 @@ function TotalSupply() {
 
   return (
     <div>
-      <h2>Data from API: {isLoadingCheque}</h2>
+      
+
+      <b>Liqudation cheque: {isLoadingCheque}</b>
       <pre>{JSON.stringify(liquidationCheque, null, 2)}</pre>
-      Upala ID: {upalaID?.toString()}
-      <button
+
+      <p><b>Upala ID:</b> {upalaID?.toString()}
+      {/* <button
           disabled={isRefetching}
           onClick={() => refetch()}
           style={{ marginLeft: 4 }}
         >
           {isRefetching ? 'loading...' : 'refetch'}
-        </button>
-
+        </button> */}
         <button
           disabled={!newId}
           onClick={() => newId && newId()}
@@ -140,11 +143,12 @@ function TotalSupply() {
         >
           {isNewIdLoading ? 'loading...' : 'New Upala ID'}
         </button>
+        </p> 
+
 
       <button
           disabled={!liquidate}
           onClick={() => liquidate && liquidate()}
-          style={{ marginLeft: 4 }}
         >
           {isNewIdLoading ? 'loading...' : 'Liquidate'}
         </button>

@@ -29,7 +29,6 @@ export function Page() {
         <h2>Balances</h2>
         <Balance />
         <hr />
-        <h2>Read Contract</h2>
         <ReadContract />
         <br />
       </Connected>
