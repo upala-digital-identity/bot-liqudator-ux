@@ -22,7 +22,8 @@ const defaultLiquidationCheque = {
   "warning": "",
   "score": 0,
   "isLiquidated": false,
-  "cheque": ""
+  "cheque": "",
+  "bundleId": ""
 }
 
 function TotalSupply() {
@@ -38,17 +39,22 @@ function TotalSupply() {
       setLoading(true);
       let data: any = {};
       try {
-        const apiKey = "sdaf";
         const url = signerAPIurl.dev + "?stamp=Discord&address=" + address;
+        const apiKey = process.env.NEXT_PUBLIC_GC_KEY || undefined
+        if (!apiKey) {
+          throw new Error("Cheque signer: No api key provided");
+        }
         const response = await fetch(url, {
           method: "GET",
           headers: {
-            "X-API-KEY": apiKey,
-          },
-        });
+            'X-API-KEY': apiKey,
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+          }
+        })
 
         if (!response.ok) {
-          throw new Error("Failed to fetch data");
+          throw new Error("Cheque signer: Failed to fetch data");
         }
 
         const responseData = await response.json();
@@ -68,11 +74,11 @@ function TotalSupply() {
       fetchData();
       console.log(`DataFetcher: fetching for address ${address}`);
     } else {
-      setData(null);
+      setData({});
     }
   }, [address]);
 
-
+  // console.log("chainnnn:", chain?.id)
   // check Upala ID
   const { data: upalaID, isRefetching, refetch } = useContractRead({
     address: contracts[31337][0].contracts.Upala.address,
@@ -108,7 +114,7 @@ function TotalSupply() {
       upalaID as Address,
       address as Address,
       liquidationCheque?.score,
-      bundleId.discord as Address, // TODO not an address, actually (long hash)
+      liquidationCheque?.bundleId as Address,
       liquidationCheque?.cheque as Address,
      ],
     // enabled: !gotUpalaID,  // no Upala ID TODO 
