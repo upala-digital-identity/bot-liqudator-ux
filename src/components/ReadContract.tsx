@@ -3,10 +3,9 @@
 import { useEffect, useState } from "react";
 import { BaseError } from 'viem'
 import { type Address, useNetwork, useContractRead, useWalletClient, usePrepareContractWrite, useAccount, useContractWrite, useWaitForTransaction} from 'wagmi'
-import { wagmiContractConfig } from './contracts'
-import contracts from './constants'
-import { signerAPIurl, bundleId } from "../app.config.js";
+import { signerAPIurl, poolAddress } from "../app.config.js";
 import { stringify } from '../utils/stringify'
+const { UpalaConstants } = require('@upala/constants')
 
 export function ReadContract() {
   return (
@@ -80,9 +79,15 @@ function TotalSupply() {
 
   // console.log("chainnnn:", chain?.id)
   // check Upala ID
+  let upConst
+  if (chain?.id) {
+    upConst = new UpalaConstants(chain?.id)
+  }
+  const upalaAbi: ReadonlyArray<Object> = upConst?.getAbi('Upala');
+
   const { data: upalaID, isRefetching, refetch } = useContractRead({
-    address: contracts[31337][0].contracts.Upala.address,
-    abi: contracts[31337][0].contracts.Upala.abi,
+    address: upConst?.getAddress("Upala"),
+    abi: upalaAbi,
     functionName: 'myId',
     account: walletClient?.account
   })
@@ -91,8 +96,8 @@ function TotalSupply() {
 
   // register Upala ID
   const { config: newIdentityConfig } = usePrepareContractWrite({
-    address: contracts[31337][0].contracts.Upala.address,
-    abi: contracts[31337][0].contracts.Upala.abi,
+    address: upConst?.getAddress("Upala"),
+    abi: upalaAbi,
     functionName: 'newIdentity',
     args: [address as Address],
     enabled: gotUpalaID,
@@ -107,8 +112,8 @@ function TotalSupply() {
 
   // liqudate
   const { config: liquidateConfig } = usePrepareContractWrite({
-    address: contracts[31337][0].contracts.SignedScoresPool.address,
-    abi: contracts[31337][0].contracts.SignedScoresPool.abi,
+    address: poolAddress as Address,
+    abi: upConst?.getAbi("SignedScoresPool"),
     functionName: "attack",
     args: [ 
       upalaID as Address,
