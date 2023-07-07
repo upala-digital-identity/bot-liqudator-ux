@@ -1,7 +1,8 @@
 'use client'
 
-import { useAccount, useBalance } from 'wagmi'
+import { useAccount, useBalance, useNetwork } from 'wagmi'
 import contracts from './constants'
+const { UpalaConstants } = require('@upala/constants')
 
 export function Balance() {
   return (
@@ -19,10 +20,15 @@ export function AccountBalance() {
     address,
     watch: true,
   })
+  const { chain } = useNetwork()
+  let upConst
+  if (chain?.id) {
+    upConst = new UpalaConstants(chain?.id)
+  }
 
   const { data: daiBalance } = useBalance({
     address,
-    token: contracts[31337][0].contracts.DAI.address,
+    token: upConst?.getAddress("DAI"),
   })
 
   return (
