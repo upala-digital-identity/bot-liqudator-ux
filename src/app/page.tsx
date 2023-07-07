@@ -12,7 +12,7 @@ export function Page() {
 
       <Connected>
         <hr />
-        <h2>Balances</h2>
+        {/* <h2>Balances</h2> */}
         <Balance />
         <hr />
         <ReadContract />
