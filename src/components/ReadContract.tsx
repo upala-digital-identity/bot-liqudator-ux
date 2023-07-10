@@ -74,7 +74,7 @@ function TotalSupply() {
       fetchData();
       console.log(`DataFetcher: fetching for address ${address}`);
     } else {
-      setliquidationCheque({});
+      setliquidationCheque(defaultLiquidationCheque);
     }
   }, [address]);
 
@@ -158,7 +158,7 @@ function TotalSupply() {
           {isNewIdLoading ? 'loading...' : 'New Upala ID'}
         </button>
       <br />
-      Your Upala ID: { upalaID ? upalaID.toString() : 'not yet registered'}
+      Your Upala ID: { upalaID ? upalaID.toString() : 'not yet registered or already liquidated'}
       {/* <button
           disabled={isRefetching}
           onClick={() => refetch()}
@@ -170,7 +170,7 @@ function TotalSupply() {
 
       <br />
       <br />
-      <b>3. Liquidate your Upala ID</b>
+      <b>3. Liquidate your Upala ID </b>
       <button
           disabled={!liquidate}
           onClick={() => liquidate && liquidate()}

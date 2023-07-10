@@ -3,7 +3,7 @@ import { ConnectButton } from '../components/ConnectButton'
 import { Connected } from '../components/Connected'
 import { ReadContract } from '../components/ReadContract'
 
-export function Page() {
+function Page() {
   return (
     <>
       <h1>Bot liquidator</h1>
