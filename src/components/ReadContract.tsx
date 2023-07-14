@@ -3,9 +3,8 @@
 import { useEffect, useState } from "react";
 import { BaseError } from 'viem'
 import { type Address, useNetwork, useContractRead, useWalletClient, usePrepareContractWrite, useAccount, useContractWrite, useWaitForTransaction} from 'wagmi'
-import { signerAPIurl, poolAddress } from "../app.config.js";
 import { stringify } from '../utils/stringify'
-const { UpalaConstants } = require('@upala/constants')
+import { UpalaConstants } from '@upala/constants';
 
 export function ReadContract() {
   return (
@@ -16,6 +15,10 @@ export function ReadContract() {
     </div>
   )
 }
+
+const signerAPIurl = process.env.NEXT_PUBLIC_SIGNER_URL
+const poolAddress = process.env.NEXT_PUBLIC_POOL_ADDRESS
+
 const defaultLiquidationCheque = {
   "address": "",
   "warning": "",
@@ -38,7 +41,7 @@ function TotalSupply() {
       setLoading(true);
       let data: any = {};
       try {
-        const url = signerAPIurl.dev + "?stamp=Discord&address=" + address;
+        const url = signerAPIurl + "?stamp=Discord&address=" + address;
         const apiKey = process.env.NEXT_PUBLIC_GC_KEY || undefined
         if (!apiKey) {
           throw new Error("Cheque signer: No api key provided");
