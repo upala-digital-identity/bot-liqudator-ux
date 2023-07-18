@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { BaseError } from 'viem'
+import { use } from 'react'
 import { type Address, useNetwork, useContractRead, useWalletClient, usePrepareContractWrite, useAccount, useContractWrite, useWaitForTransaction} from 'wagmi'
 import { stringify } from '../utils/stringify'
 import { UpalaConstants } from '@upala/constants';
@@ -95,7 +96,8 @@ function TotalSupply() {
     account: walletClient?.account
   })
   const gotUpalaID = Boolean(upalaID) && upalaID !== "0x0" && upalaID !== "0x0000000000000000000000000000000000000000"
-
+  debugger;
+  console.log("gotUpalaID", gotUpalaID)
 
   // register Upala ID
   const { config: newIdentityConfig } = usePrepareContractWrite({
