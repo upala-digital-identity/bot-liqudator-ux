@@ -1,0 +1,29 @@
+
+    // register Upala ID button
+    const { config: newIdentityConfig } = usePrepareContractWrite({
+      ...commonParams,
+      functionName: 'newIdentity',
+      args: [address as Address],
+      enabled: !gotUpalaID,
+    })
+    const { write: newId, data: newIDdata, error, isLoading: isNewIdLoading, isError } = useContractWrite(newIdentityConfig)
+    const {
+      data: receipt,
+      isLoading: isPending,
+      isSuccess,
+    } = useWaitForTransaction({ hash: newIDdata?.hash })
+
+   {/* {/* <button
+      disabled={isRefetching}
+      onClick={() => refetch()}
+      style={{ marginLeft: 4 }}
+    >
+      {isRefetching ? 'loading...' : 'refetch'}
+    </button>  */}
+    <button
+    disabled={!newId}
+    onClick={() => newId && newId()}
+    style={{ marginLeft: 4 }}
+  >
+    {isNewIdLoading ? 'loading...' : 'New Upala ID'}
+  </button>

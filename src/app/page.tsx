@@ -2,6 +2,7 @@ import { Balance } from '../components/Balance'
 import { ConnectButton } from '../components/ConnectButton'
 import { Connected } from '../components/Connected'
 import { ReadContract } from '../components/ReadContract'
+import { UpalaID } from '../components/UpalaID'
 
 function Page() {
   return (
@@ -15,7 +16,7 @@ function Page() {
         {/* <h2>Balances</h2> */}
         <Balance />
         <hr />
-        <ReadContract />
+        <UpalaID />
         <br />
       </Connected>
     </>

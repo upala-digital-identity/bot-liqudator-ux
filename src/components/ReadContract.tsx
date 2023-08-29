@@ -82,27 +82,33 @@ function TotalSupply() {
     }
   }, [address]);
 
-  // check Upala ID
+
   let upConst
   if (chain?.id) {
     upConst = new UpalaConstants(chain?.id)
   }
-  const upalaAbi: ReadonlyArray<Object> = upConst?.getAbi('Upala');
+  const upalaAbi: ReadonlyArray<Object> = JSON.parse(upConst?.getAbi('Upala'));
 
-  const { data: upalaID, isRefetching, refetch } = useContractRead({
+  const commonParams = {
     address: upConst?.getAddress("Upala"),
     abi: upalaAbi,
+  } 
+
+  // check Upala ID
+  const readUpalaIDParams = {
     functionName: 'myId',
     account: walletClient?.account
-  })
+  }
+  const { data: upalaID, isRefetching, refetch } 
+    = useContractRead({...commonParams, ...readUpalaIDParams})
+
   const gotUpalaID = Boolean(upalaID) && upalaID !== "0x0" && upalaID !== "0x0000000000000000000000000000000000000000"
-  debugger;
+  console.log("upalaID", upalaID)
   console.log("gotUpalaID", gotUpalaID)
 
   // register Upala ID
   const { config: newIdentityConfig } = usePrepareContractWrite({
-    address: upConst?.getAddress("Upala"),
-    abi: upalaAbi,
+    ...commonParams,
     functionName: 'newIdentity',
     args: [address as Address],
     enabled: !gotUpalaID,
@@ -155,7 +161,7 @@ function TotalSupply() {
       <br />
       <b>2. Create an Upala ID</b>
       {gotUpalaID ? '[✓]' : '[_]'}
-      <button
+     <button
           disabled={!newId}
           onClick={() => newId && newId()}
           style={{ marginLeft: 4 }}
@@ -164,13 +170,13 @@ function TotalSupply() {
         </button>
       <br />
       Your Upala ID: { upalaID ? upalaID.toString() : 'not yet registered or already liquidated'}
-      {/* <button
+      {/* {/* <button
           disabled={isRefetching}
           onClick={() => refetch()}
           style={{ marginLeft: 4 }}
         >
           {isRefetching ? 'loading...' : 'refetch'}
-        </button> */}
+        </button>  */}
 
 
       <br />
