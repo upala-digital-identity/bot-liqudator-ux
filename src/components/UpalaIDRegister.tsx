@@ -1,10 +1,23 @@
+'use client'
+
+import { useEffect, useState } from "react";
+import { BaseError } from 'viem'
+import { use } from 'react'
+import { type Address, useNetwork, useContractRead, useWalletClient, usePrepareContractWrite, useAccount, useContractWrite, useWaitForTransaction} from 'wagmi'
+import { stringify } from '../utils/stringify'
+import { UpalaConstants } from '@upala/constants';
+
+export function UpalaIDRegister ({ params }: { params: any }) {
+
+  const prepareParams = {
+    ...params,
+    functionName: 'newIdentity',
+    args: [params.userAddress as Address],
+  }
 
     // register Upala ID button
     const { config: newIdentityConfig } = usePrepareContractWrite({
-      ...commonParams,
-      functionName: 'newIdentity',
-      args: [address as Address],
-      enabled: !gotUpalaID,
+      ...prepareParams
     })
     const { write: newId, data: newIDdata, error, isLoading: isNewIdLoading, isError } = useContractWrite(newIdentityConfig)
     const {
@@ -13,6 +26,8 @@
       isSuccess,
     } = useWaitForTransaction({ hash: newIDdata?.hash })
 
+    return (
+      <>
    {/* {/* <button
       disabled={isRefetching}
       onClick={() => refetch()}
@@ -27,3 +42,6 @@
   >
     {isNewIdLoading ? 'loading...' : 'New Upala ID'}
   </button>
+  </>
+    )
+  }
