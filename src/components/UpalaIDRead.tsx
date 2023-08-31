@@ -9,6 +9,7 @@ export function UpalaIDRead({ params }: { params: any }) {
     functionName: 'myId',
   }
 
+
   const isValidUpalaID = (rawUpalaID: any) => {
       return Boolean(rawUpalaID) && rawUpalaID !== "0x0" && rawUpalaID !== "0x0000000000000000000000000000000000000000"
 
@@ -16,13 +17,13 @@ export function UpalaIDRead({ params }: { params: any }) {
   const { data: upalaID, isRefetching, refetch } = useContractRead({
     ...readUpalaIDParams,
     onSettled(data, error) {
-      const validUpalaID = isValidUpalaID(data) ? data : ''
+      const validUpalaID = isValidUpalaID(data) ? data : 'no Upala id'
       params.setUpalaID(validUpalaID)
       console.log('Settled', { data, error })
     }
   })
 
-  console.log("gotUpalaID", params.upalaID)
+  console.log("UpalaIDRead: gotUpalaID", params.upalaID)
 
   return (
     <div>

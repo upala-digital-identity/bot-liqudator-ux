@@ -7,7 +7,7 @@ import { type Address, useNetwork, useContractRead, useWalletClient, usePrepareC
 import { stringify } from '../utils/stringify'
 import { UpalaConstants } from '@upala/constants';
 
-export function UpalaIDRegister ({ params }: { params: any }) {
+export function UpalaIDRegister ({ params, refetchUpalaID }: { params: any, refetchUpalaID: () => void }) {
 
   const prepareParams = {
     ...params,
@@ -24,8 +24,13 @@ export function UpalaIDRegister ({ params }: { params: any }) {
       data: receipt,
       isLoading: isPending,
       isSuccess,
-    } = useWaitForTransaction({ hash: newIDdata?.hash })
-
+    } = useWaitForTransaction({ 
+      hash: newIDdata?.hash,
+      onSuccess(data) {
+        console.log('Registered Successfully', data)
+        refetchUpalaID()}
+      })
+    
     return (
       <>
    {/* {/* <button
@@ -38,6 +43,7 @@ export function UpalaIDRegister ({ params }: { params: any }) {
     <button
     disabled={!newId}
     onClick={() => newId && newId()}
+    // onClick={() => refetchUpalaID()}
     style={{ marginLeft: 4 }}
   >
     {isNewIdLoading ? 'loading...' : 'New Upala ID'}

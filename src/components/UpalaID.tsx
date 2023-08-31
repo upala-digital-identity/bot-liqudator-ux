@@ -17,20 +17,35 @@ export function UpalaID() {
       upConst = new UpalaConstants(chain?.id)
     }
     const upalaAbi: ReadonlyArray<Object> = JSON.parse(upConst?.getAbi('Upala'));
+    const upalaAddress = upConst?.getAddress("Upala")
+    const userAccount = walletClient?.account
+    const enabled = Boolean(upalaAddress && userAccount) 
+    console.log("enabled", enabled)
     const commonParams = 
         {
-        address: upConst?.getAddress("Upala"),
+        address: upalaAddress,
         abi: upalaAbi,
-        account: walletClient?.account,
+        account: userAccount,
         userAddress: userAddress,
         setUpalaID: setUpalaID,
-        upalaID: upalaID
+        upalaID: upalaID,
+        enabled: enabled
         }
-        
+
+    const { data, refetch: refetchUpalaID } = useContractRead({
+        ...commonParams,
+        functionName: 'myId',
+        onSettled(data, error) {
+          console.log('toplevel: Settled', { data, error })
+        }
+      })
+    console.log("toplevel:", data)
+    
     return(
         <>
-            <UpalaIDRead params={ commonParams } />
-            {!upalaID && <UpalaIDRegister params={ commonParams } />}
+            {/* { enabled && <UpalaIDRead params={ commonParams } />} */}
+            {/* TODO fix first run (when UpalaID is not fetced yet) */}
+            { <UpalaIDRegister params={ commonParams } refetchUpalaID={refetchUpalaID}/>}
         </>
     )
 }
