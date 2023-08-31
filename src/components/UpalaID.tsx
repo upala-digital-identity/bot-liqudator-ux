@@ -10,7 +10,7 @@ export function UpalaID() {
     const { address: userAddress } = useAccount()
     const { data: walletClient} = useWalletClient()
     const { chain } = useNetwork()
-    const [upalaID, setUpalaID] = useState('')
+    // const [upalaID, setUpalaID] = useState('')
 
     let upConst
     if (chain?.id) {
@@ -19,28 +19,46 @@ export function UpalaID() {
     const upalaAbi: ReadonlyArray<Object> = JSON.parse(upConst?.getAbi('Upala'));
     const upalaAddress = upConst?.getAddress("Upala")
     const userAccount = walletClient?.account
-    const enabled = Boolean(upalaAddress && userAccount) 
-    console.log("enabled", enabled)
     const commonParams = 
         {
         address: upalaAddress,
         abi: upalaAbi,
         account: userAccount,
         userAddress: userAddress,
-        setUpalaID: setUpalaID,
-        upalaID: upalaID,
-        enabled: enabled
+        enabled: Boolean(upalaAddress && userAccount)
         }
 
-    const { data, refetch: refetchUpalaID } = useContractRead({
-        ...commonParams,
-        functionName: 'myId',
-        onSettled(data, error) {
-          console.log('toplevel: Settled', { data, error })
-        }
-      })
-    console.log("toplevel:", data)
-    
+    const isValidUpalaID = (rawUpalaID: any) => {
+        return Boolean(rawUpalaID) && rawUpalaID !== "0x0" && rawUpalaID !== "0x0000000000000000000000000000000000000000"
+    }
+
+    // const { data, refetch: refetchUpalaID } = useContractRead({
+    //     ...commonParams,
+    //     functionName: 'myId',
+    //     onSettled(data, error) {
+    //         const validUpalaID = String(isValidUpalaID(data) ? data : 'no Upala id')
+    //         setUpalaID(validUpalaID)
+    //         console.log('toplevel: Settled', { data, error })
+    //     }
+    //   })
+
+    function useMyId(commonParams: any) {
+        const [upalaID, setUpalaID] = useState('');
+        const { data, refetch: refetchUpalaID } = useContractRead({
+            ...commonParams,
+            functionName: 'myId',
+            onSettled(data, error) {
+                const validUpalaID = String(isValidUpalaID(data) ? data : 'no Upala id')
+                setUpalaID(validUpalaID)
+                console.log('toplevel: Settled', { data, error })
+            }
+        });
+        return { data, refetchUpalaID, upalaID };
+    }
+     
+    const { data, refetchUpalaID, upalaID } = useMyId(commonParams);
+
+    console.log("toplevel: UpalaID", data)
     return(
         <>
             {/* { enabled && <UpalaIDRead params={ commonParams } />} */}
