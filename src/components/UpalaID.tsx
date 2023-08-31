@@ -5,12 +5,12 @@ import { type Address, useNetwork, useContractRead, useWalletClient, usePrepareC
 import { UpalaConstants } from '@upala/constants';
 import { UpalaIDRead } from "./UpalaIDRead";
 import { UpalaIDRegister } from "./UpalaIDRegister";
+import { useUpalaId } from "../hooks/useUpalaID"
 
 export function UpalaID() {
     const { address: userAddress } = useAccount()
     const { data: walletClient} = useWalletClient()
     const { chain } = useNetwork()
-    // const [upalaID, setUpalaID] = useState('')
 
     let upConst
     if (chain?.id) {
@@ -28,37 +28,9 @@ export function UpalaID() {
         enabled: Boolean(upalaAddress && userAccount)
         }
 
-    const isValidUpalaID = (rawUpalaID: any) => {
-        return Boolean(rawUpalaID) && rawUpalaID !== "0x0" && rawUpalaID !== "0x0000000000000000000000000000000000000000"
-    }
+    const { upalaID , refetchUpalaID} = useUpalaId(commonParams);
 
-    // const { data, refetch: refetchUpalaID } = useContractRead({
-    //     ...commonParams,
-    //     functionName: 'myId',
-    //     onSettled(data, error) {
-    //         const validUpalaID = String(isValidUpalaID(data) ? data : 'no Upala id')
-    //         setUpalaID(validUpalaID)
-    //         console.log('toplevel: Settled', { data, error })
-    //     }
-    //   })
-
-    function useMyId(commonParams: any) {
-        const [upalaID, setUpalaID] = useState('');
-        const { data, refetch: refetchUpalaID } = useContractRead({
-            ...commonParams,
-            functionName: 'myId',
-            onSettled(data, error) {
-                const validUpalaID = String(isValidUpalaID(data) ? data : 'no Upala id')
-                setUpalaID(validUpalaID)
-                console.log('toplevel: Settled', { data, error })
-            }
-        });
-        return { data, refetchUpalaID, upalaID };
-    }
-     
-    const { data, refetchUpalaID, upalaID } = useMyId(commonParams);
-
-    console.log("toplevel: UpalaID", data)
+    console.log("toplevel: UpalaID", upalaID)
     return(
         <>
             {/* { enabled && <UpalaIDRead params={ commonParams } />} */}
