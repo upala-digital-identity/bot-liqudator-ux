@@ -11,7 +11,7 @@ export function useUpalaId(commonParams: any) {
         ...commonParams,
         functionName: 'myId',
         onSettled(data, error) {
-            const validUpalaID = String(isValidUpalaID(data) ? data : 'no Upala id')
+            const validUpalaID = String(isValidUpalaID(data) ? data : '')
             setUpalaID(validUpalaID)
             console.log('useUpalaId: settled', { data, error })
         }

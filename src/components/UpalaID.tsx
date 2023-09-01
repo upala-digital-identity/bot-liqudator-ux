@@ -29,12 +29,11 @@ export function UpalaID() {
         }
 
     const { upalaID , refetchUpalaID} = useUpalaId(commonParams);
-
     console.log("toplevel: UpalaID", upalaID)
+
     return(
         <>
-            {/* { enabled && <UpalaIDRead params={ commonParams } />} */}
-            {/* TODO fix first run (when UpalaID is not fetced yet) */}
+            { <UpalaIDRead upalaID={ upalaID } />}
             { <UpalaIDRegister params={ commonParams } refetchUpalaID={refetchUpalaID}/>}
         </>
     )
