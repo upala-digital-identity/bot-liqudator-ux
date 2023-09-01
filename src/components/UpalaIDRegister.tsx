@@ -1,53 +1,53 @@
 'use client'
 
-import { useEffect, useState } from "react";
-import { BaseError } from 'viem'
-import { use } from 'react'
-import { type Address, useNetwork, useContractRead, useWalletClient, usePrepareContractWrite, useAccount, useContractWrite, useWaitForTransaction} from 'wagmi'
-import { stringify } from '../utils/stringify'
-import { UpalaConstants } from '@upala/constants';
+import { type Address, usePrepareContractWrite, useContractWrite, useWaitForTransaction} from 'wagmi'
 
-export function UpalaIDRegister ({ params, refetchUpalaID }: { params: any, refetchUpalaID: () => void }) {
-
+export function UpalaIDRegister ({ upalaID, params, refetchUpalaID }: { upalaID: any, params: any, refetchUpalaID: () => void }) {
   const prepareParams = {
     ...params,
     functionName: 'newIdentity',
     args: [params.userAddress as Address],
+    enabled: Boolean(upalaID == "0x0")
   }
 
-    // register Upala ID button
-    const { config: newIdentityConfig } = usePrepareContractWrite({
-      ...prepareParams
-    })
-    const { write: newId, data: newIDdata, error, isLoading: isNewIdLoading, isError } = useContractWrite(newIdentityConfig)
-    const {
-      data: receipt,
-      isLoading: isPending,
-      isSuccess,
-    } = useWaitForTransaction({ 
-      hash: newIDdata?.hash,
-      onSuccess(data) {
-        console.log('Registered Successfully', data)
-        refetchUpalaID()}
-      })
-    
-    return (
-      <>
-   {/* {/* <button
-      disabled={isRefetching}
-      onClick={() => refetch()}
-      style={{ marginLeft: 4 }}
-    >
-      {isRefetching ? 'loading...' : 'refetch'}
-    </button>  */}
-    <button
-    disabled={!newId}
-    onClick={() => newId && newId()}
-    // onClick={() => refetchUpalaID()}
-    style={{ marginLeft: 4 }}
-  >
-    {isNewIdLoading ? 'loading...' : 'New Upala ID'}
-  </button>
-  </>
-    )
-  }
+  // prepare
+  const { config: newIdentityConfig } = usePrepareContractWrite({ ...prepareParams })
+
+  // write
+  const { 
+    write: newId,
+    data: newIDdata,
+    error,
+    isLoading: isNewIdLoading,
+    isError 
+  } = useContractWrite(newIdentityConfig)
+
+  // wait for tx
+  const {
+    data: receipt,
+    isLoading: isPending,
+    isSuccess,
+  } = useWaitForTransaction({
+    hash: newIDdata?.hash,
+    onSuccess(data) {
+      console.log('Registered Successfully', data)
+      refetchUpalaID()
+    }
+  })
+
+
+  console.log("enabled", Boolean(upalaID == "0x0"))
+  console.log("disabled !newId", !newId)
+  return (
+    <>
+      <button
+        disabled={!Boolean(upalaID == '0x0')}
+        onClick={() => newId && newId()}
+        // onClick={() => refetchUpalaID()}
+        style={{ marginLeft: 0 }}
+      >
+        {isNewIdLoading ? 'loading...' : 'New Upala ID'}
+      </button>
+    </>
+  )
+}
