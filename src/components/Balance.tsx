@@ -24,9 +24,11 @@ export function AccountBalance() {
   if (chain?.id) {
     upConst = new UpalaConstants(chain?.id)
   }
+  const token = upConst?.getAddress("DAI")
   const { data: daiBalance } = useBalance({
     address,
-    token: upConst?.getAddress("DAI"),
+    token: token,
+    enabled: Boolean(address && token)
   })
 
   return (
