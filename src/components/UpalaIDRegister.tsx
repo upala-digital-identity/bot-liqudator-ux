@@ -35,9 +35,6 @@ export function UpalaIDRegister ({ upalaID, params, refetchUpalaID }: { upalaID:
     }
   })
 
-
-  console.log("enabled", Boolean(upalaID == "0x0"))
-  console.log("disabled !newId", !newId)
   return (
     <>
       <button
