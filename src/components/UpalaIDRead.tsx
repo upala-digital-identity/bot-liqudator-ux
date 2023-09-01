@@ -7,9 +7,9 @@ export function UpalaIDRead({ upalaID }: { upalaID: any }) {
   return (
     <div>
       <b>2. Create an Upala ID</b>
-      {upalaID ? '[✓]' : '[_]'}
+      {upalaID != "0x0" ? '[✓]' : '[_]'}
       <br />
-      {upalaID ? <>Your Upala ID: {upalaID?.toString()} </>: 'not yet registered or already liquidated'}
+      {upalaID  != "0x0" ? <>Your Upala ID: {upalaID?.toString()} </>: 'not yet registered or already liquidated'}
       <br />
     </div>
   )

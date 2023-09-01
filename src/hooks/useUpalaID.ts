@@ -6,12 +6,12 @@ const isValidUpalaID = (rawUpalaID: any) => {
 }
 
 export function useUpalaId(commonParams: any) {
-    const [upalaID, setUpalaID] = useState('');
+    const [upalaID, setUpalaID] = useState('fetching');
     const { data, refetch: refetchUpalaID } = useContractRead({
         ...commonParams,
         functionName: 'myId',
         onSettled(data, error) {
-            const validUpalaID = String(isValidUpalaID(data) ? data : '')
+            const validUpalaID = String(isValidUpalaID(data) ? data : '0x0')
             setUpalaID(validUpalaID)
             console.log('useUpalaId: settled', { data, error })
         }

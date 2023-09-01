@@ -33,8 +33,8 @@ export function UpalaID() {
 
     return(
         <>
-            { <UpalaIDRead upalaID={ upalaID } />}
-            { <UpalaIDRegister params={ commonParams } refetchUpalaID={refetchUpalaID}/>}
+            { upalaID != 'fetching' && <UpalaIDRead upalaID={ upalaID } />}
+            { upalaID != 'fetching' && <UpalaIDRegister upalaID={ upalaID } params={ commonParams } refetchUpalaID={refetchUpalaID}/>}
         </>
     )
 }
