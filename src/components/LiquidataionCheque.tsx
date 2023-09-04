@@ -2,6 +2,7 @@
 
 export function LiquidationCheque({ liquidationCheque, isLoadingCheque }:
     { liquidationCheque: any, isLoadingCheque: any }) {
+    // console.log(liquidationCheque)
 
     return (
         <div>

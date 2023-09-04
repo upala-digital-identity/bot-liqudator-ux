@@ -1,7 +1,5 @@
 'use client'
 
-import { useContractRead } from 'wagmi'
-
 export function UpalaIDRead({ upalaID }: { upalaID: any }) {
 
   return (
@@ -14,5 +12,3 @@ export function UpalaIDRead({ upalaID }: { upalaID: any }) {
     </div>
   )
 }
-  
-

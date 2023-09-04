@@ -1,6 +1,6 @@
 'use client'
 
-import { type Address, useNetwork, useWalletClient, useAccount } from 'wagmi'
+import { useNetwork, useWalletClient, useAccount } from 'wagmi'
 import { UpalaConstants } from '@upala/constants';
 import { UpalaIDRead } from "./UpalaIDRead";
 import { UpalaIDRegister } from "./UpalaIDRegister";
