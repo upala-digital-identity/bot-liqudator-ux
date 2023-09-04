@@ -7,6 +7,7 @@ import { UpalaIDRegister } from "./UpalaIDRegister";
 import { useUpalaId } from "../hooks/useUpalaID"
 import { useChequeFetcher } from '../hooks/useChequeFetch';
 import { LiquidationCheque } from './LiquidataionCheque';
+import { Liquidator } from './Liquidator';
 
 export function UpalaID() {
     const { address: userAddress } = useAccount()
@@ -17,7 +18,9 @@ export function UpalaID() {
     if (chain?.id) {
       upConst = new UpalaConstants(chain?.id)
     }
+    // TODO why abi is fetched in different ways?!
     const upalaAbi: ReadonlyArray<Object> = JSON.parse(upConst?.getAbi('Upala'));
+    const poolAbi: ReadonlyArray<Object> = upConst?.getAbi('SignedScoresPool')
     const upalaAddress = upConst?.getAddress("Upala")
     const userAccount = walletClient?.account
     const commonParams = 
@@ -36,6 +39,12 @@ export function UpalaID() {
             <LiquidationCheque liquidationCheque={liquidationCheque} isLoadingCheque={isLoadingCheque}/>
             { upalaID != 'fetching' && <UpalaIDRead upalaID={ upalaID } />}
             { upalaID != 'fetching' && <UpalaIDRegister upalaID={ upalaID } params={ commonParams } refetchUpalaID={refetchUpalaID}/>}
+            <Liquidator 
+                upalaID={upalaID}
+                userAddress={userAddress}
+                liquidationCheque={liquidationCheque}
+                poolAbi={poolAbi}
+            />
         </>
     )
 }
