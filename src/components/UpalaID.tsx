@@ -5,6 +5,8 @@ import { UpalaConstants } from '@upala/constants';
 import { UpalaIDRead } from "./UpalaIDRead";
 import { UpalaIDRegister } from "./UpalaIDRegister";
 import { useUpalaId } from "../hooks/useUpalaID"
+import { useChequeFetcher } from '../hooks/useChequeFetch';
+import { LiquidationCheque } from './LiquidataionCheque';
 
 export function UpalaID() {
     const { address: userAddress } = useAccount()
@@ -26,12 +28,12 @@ export function UpalaID() {
         userAddress: userAddress,
         enabled: Boolean(upalaAddress && userAccount)
         }
-
+    const { liquidationCheque, isLoadingCheque } = useChequeFetcher(userAddress)
     const { upalaID , refetchUpalaID} = useUpalaId(commonParams);
-    console.log("toplevel: UpalaID", upalaID)
 
     return(
         <>
+            <LiquidationCheque liquidationCheque={liquidationCheque} isLoadingCheque={isLoadingCheque}/>
             { upalaID != 'fetching' && <UpalaIDRead upalaID={ upalaID } />}
             { upalaID != 'fetching' && <UpalaIDRegister upalaID={ upalaID } params={ commonParams } refetchUpalaID={refetchUpalaID}/>}
         </>
