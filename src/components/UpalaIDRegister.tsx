@@ -18,15 +18,12 @@ export function UpalaIDRegister ({ upalaID, params, refetchUpalaID }: { upalaID:
     write: newId,
     data: newIDdata,
     error,
-    isLoading: isNewIdLoading,
     isError 
   } = useContractWrite(newIdentityConfig)
 
   // wait for tx
   const {
-    data: receipt,
     isLoading: isPending,
-    isSuccess,
   } = useWaitForTransaction({
     hash: newIDdata?.hash,
     onSuccess(data) {
@@ -40,10 +37,9 @@ export function UpalaIDRegister ({ upalaID, params, refetchUpalaID }: { upalaID:
       <button
         disabled={!Boolean(upalaID == '0x0')}
         onClick={() => newId && newId()}
-        // onClick={() => refetchUpalaID()}
         style={{ marginLeft: 0 }}
       >
-        {isNewIdLoading ? 'loading...' : 'New Upala ID'}
+        {isPending ? 'Waiting for tx...' : 'New Upala ID'}
       </button>
     </>
   )
