@@ -7,8 +7,8 @@ import { stringify } from '../utils/stringify'
 const poolAddress = process.env.NEXT_PUBLIC_POOL_ADDRESS
 
 export function Liquidator(
-    { upalaID, userAddress, liquidationCheque, poolAbi }:
-        { upalaID: any, userAddress: any, liquidationCheque: any, poolAbi: any }) {
+    { upalaID, userAddress, liquidationCheque, poolAbi, refetchUpalaID }:
+        { upalaID: any, userAddress: any, liquidationCheque: any, poolAbi: any, refetchUpalaID: () => void }) {
 
     // prepare liquidation
     const { config: liquidateConfig } = usePrepareContractWrite({
@@ -30,16 +30,21 @@ export function Liquidator(
         write: liquidate,
         data: liquidationData,
         error: liquidationError,
-        isLoading: isLiqLoading,
         isError: isLiqError
     } = useContractWrite(liquidateConfig)
 
     // wait for transaction 
     const {
-        data: liqReceipt,
-        isLoading: isLiqPending,
-        isSuccess: isLiqSuccess,
-    } = useWaitForTransaction({ hash: liquidationData?.hash })
+        isLoading,
+        isSuccess,
+    } = useWaitForTransaction(
+        {
+            hash: liquidationData?.hash,
+            onSuccess(data) {
+                console.log('Liquidated successfully', data)
+                refetchUpalaID()
+            }
+        })
 
     return (
         <div>
@@ -48,8 +53,13 @@ export function Liquidator(
                 disabled={!liquidate}
                 onClick={() => liquidate && liquidate()}
             >
-                {isLiqLoading ? 'loading...' : 'Liquidate'}
+                {isLoading ? 'loading...' : 'Liquidate'}
             </button>
+            {isSuccess && (
+                <div>
+                    Liquidated! Check your wxDai balance!
+                </div>
+            )}
         </div>
     )
 }

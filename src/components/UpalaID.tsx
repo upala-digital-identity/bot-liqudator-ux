@@ -37,13 +37,20 @@ export function UpalaID() {
     return(
         <>
             <LiquidationCheque liquidationCheque={liquidationCheque} isLoadingCheque={isLoadingCheque}/>
-            { upalaID != 'fetching' && <UpalaIDRead upalaID={ upalaID } />}
-            { upalaID != 'fetching' && <UpalaIDRegister upalaID={ upalaID } params={ commonParams } refetchUpalaID={refetchUpalaID}/>}
+            { upalaID != 'fetching' &&
+                <UpalaIDRead upalaID={upalaID} />}
+            { upalaID != 'fetching' && 
+                <UpalaIDRegister 
+                    upalaID={ upalaID } 
+                    params={ commonParams }
+                    refetchUpalaID={refetchUpalaID}
+                />}
             <Liquidator 
                 upalaID={upalaID}
                 userAddress={userAddress}
                 liquidationCheque={liquidationCheque}
                 poolAbi={poolAbi}
+                refetchUpalaID={refetchUpalaID}
             />
         </>
     )
