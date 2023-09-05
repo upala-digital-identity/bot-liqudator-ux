@@ -48,7 +48,7 @@ export function useChequeFetcher(address: any) {
                 console.log(error);
                 data.error = error.message;
             } finally {
-                // console.log("liquidationCheque:", JSON.stringify(data, null, 2))
+                console.log("useChequeFetcher: cheque:", JSON.stringify(data, null, 2))
                 setliquidationCheque(data);
                 setLoading(false);
             }
