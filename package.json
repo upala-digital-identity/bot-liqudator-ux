@@ -10,7 +10,7 @@
   },
   "dependencies": {
     "@rainbow-me/rainbowkit": "^1.0.8",
-    "@upala/constants": "^0.1.1",
+    "@upala/constants": "^0.1.3",
     "next": "^13.4.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
