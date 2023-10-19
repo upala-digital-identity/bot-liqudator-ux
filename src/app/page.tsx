@@ -2,6 +2,7 @@ import { Balance } from '../components/Balance'
 import { ConnectButton } from '../components/ConnectButton'
 import { Connected } from '../components/Connected'
 import { UpalaID } from '../components/UpalaID'
+import { Warning } from '../components/Warning'
 
 function Page() {
   return (
@@ -16,6 +17,7 @@ function Page() {
         <hr />
         <UpalaID />
         <br />
+        <Warning />
       </Connected>
     </>
   )
